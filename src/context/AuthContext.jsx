@@ -1,28 +1,50 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return !!savedToken;
-  });
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
-  const login = (token) => {
-    localStorage.setItem("token", token);
-    setIsLoggedIn(true);
+const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const login = async (values, userType) => {
+    try {
+      const endpoint =
+        userType === "employer"
+          ? "http://localhost:3000/auth/employer/signin"
+          : "http://localhost:3000/auth/jobseeker/signin";
+
+      const response = await axios.post(endpoint, values);
+      const userData = { ...response.data.user, type: userType };
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthProvider, AuthContext };

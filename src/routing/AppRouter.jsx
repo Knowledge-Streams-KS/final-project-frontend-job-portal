@@ -1,60 +1,36 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
-import HomePage from "../pages/HomePage";
-import ProtectedRoute from "./ProtectedRoute";
-
-// Import employer pages
-import EmployerDashboard from "../pages/Employer/EmployerDashboard";
-import EmployerRegister from "../pages/Employer/EmployerRegister";
 import EmployerSignIn from "../pages/Employer/EmployerSignIn";
-
-// Import jobseeker pages
-import JobSeekerDashboard from "../pages/JobSeeker/JobSeekerDashboard";
-import JobSeekerRegister from "../pages/JobSeeker/JobSeekerRegister";
+import EmployerRegister from "../pages/Employer/EmployerRegister";
 import JobSeekerSignIn from "../pages/JobSeeker/JobSeekerSignIn";
-
-// Import footer component
+import JobSeekerRegister from "../pages/JobSeeker/JobSeekerRegister";
+import Home from "../pages/HomePage";
 import Footer from "../components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import JobSeekerDashboard from "../pages/JobSeeker/JobSeekerDashboard";
+import "../App.css"; // Make sure to import the CSS file
 
 const AppRouter = () => {
   return (
     <Router>
-      <AuthProvider>
-        <Navbar />
+      <Navbar />
+      <ToastContainer />
+      <div className="main-container">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-
-          {/* Employer routes */}
+          <Route path="/" element={<Home />} />
           <Route path="/employer/signin" element={<EmployerSignIn />} />
           <Route path="/employer/register" element={<EmployerRegister />} />
-          <Route
-            path="/employerdashboard"
-            element={
-              <ProtectedRoute>
-                <EmployerDashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Jobseeker routes */}
           <Route path="/jobseeker/signin" element={<JobSeekerSignIn />} />
           <Route path="/jobseeker/register" element={<JobSeekerRegister />} />
           <Route
-            path="/jobseekerdashboard"
-            element={
-              <ProtectedRoute>
-                <JobSeekerDashboard />
-              </ProtectedRoute>
-            }
+            path="/jobseeker/jobseekerdashboard"
+            element={<JobSeekerDashboard />}
           />
-
-          {/* Other routes */}
-          {/* Add other routes as needed */}
         </Routes>
-        <Footer />
-      </AuthProvider>
+      </div>
+      <Footer />
     </Router>
   );
 };
