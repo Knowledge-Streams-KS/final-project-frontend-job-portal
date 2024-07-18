@@ -1,3 +1,9 @@
+/* Add padding to the bottom of the main content */
+.main-content {
+  padding-bottom: 5rem; /* Adjust the value as needed */
+}
+
+/* Footer styles */
 .footer-container {
   display: flex;
   justify-content: space-between;

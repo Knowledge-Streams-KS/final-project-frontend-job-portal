@@ -10,7 +10,12 @@ import Footer from "../components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import JobSeekerDashboard from "../pages/JobSeeker/JobSeekerDashboard";
-import "../App.css"; // Make sure to import the CSS file
+
+import Settings from "../pages/Settings";
+import CreateJob from "../pages/CreateJob";
+import JobsPage from "../pages/JobsPage";
+import JobApplication from "../pages/JobApplication";
+import EmployerDashboard from "../pages/Employer/EmployerDashboard";
 
 const AppRouter = () => {
   return (
@@ -24,10 +29,13 @@ const AppRouter = () => {
           <Route path="/employer/register" element={<EmployerRegister />} />
           <Route path="/jobseeker/signin" element={<JobSeekerSignIn />} />
           <Route path="/jobseeker/register" element={<JobSeekerRegister />} />
-          <Route
-            path="/jobseeker/jobseekerdashboard"
-            element={<JobSeekerDashboard />}
-          />
+          <Route path="/jobseeker/dashboard" element={<JobSeekerDashboard />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/employer/createjob" element={<CreateJob />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          <Route path="/apply/:jobId" element={<JobApplication />} />{" "}
+          {/* Correct Route */}
         </Routes>
       </div>
       <Footer />

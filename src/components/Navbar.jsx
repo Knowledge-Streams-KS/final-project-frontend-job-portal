@@ -42,7 +42,7 @@ const Navbar = () => {
   return (
     <nav className="nav-container">
       <div className="left-nav">
-        <img src="./src/assets/logo.png" alt="Logo" className="logo" />
+        <img src="/src/assets/logo.png" alt="Logo" className="logo" />
         <NavLink to="/" className="text-lg font-semibold text-blue-600">
           Job Portal
         </NavLink>
@@ -53,18 +53,34 @@ const Navbar = () => {
         onClick={toggleMenu}
       />
       <div className={`right-nav ${menuOpen ? "open" : ""}`}>
-        <NavLink to="/" className="nav-link" activeClassName="active-nav-link">
-          Home
-        </NavLink>
-        {user ? (
+        {!user && (
           <>
-            <div className="profile-dropdown">
-              <FontAwesomeIcon
-                icon={faEnvelope}
-                className="nav-link"
-                onMouseEnter={toggleMessages}
-                onMouseLeave={toggleMessages}
-              />
+            <NavLink to="/" className="nav-link">
+              Home
+            </NavLink>
+            <NavLink to="/jobs" className="nav-link">
+              Jobs
+            </NavLink>
+          </>
+        )}
+        {user && user.type === "jobseeker" && (
+          <>
+            <NavLink to="/" className="nav-link">
+              Home
+            </NavLink>
+            <NavLink to="/jobs" className="nav-link">
+              Jobs
+            </NavLink>
+          </>
+        )}
+        {user && (
+          <>
+            <div
+              className="profile-dropdown"
+              onMouseEnter={toggleMessages}
+              onMouseLeave={toggleMessages}
+            >
+              <FontAwesomeIcon icon={faEnvelope} className="nav-link" />
               {messagesOpen && (
                 <div className="dropdown-content">
                   <NavLink to="/messages" className="dropdown-link">
@@ -76,13 +92,12 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <div className="profile-dropdown">
-              <FontAwesomeIcon
-                icon={faBell}
-                className="nav-link"
-                onMouseEnter={toggleNotifications}
-                onMouseLeave={toggleNotifications}
-              />
+            <div
+              className="profile-dropdown"
+              onMouseEnter={toggleNotifications}
+              onMouseLeave={toggleNotifications}
+            >
+              <FontAwesomeIcon icon={faBell} className="nav-link" />
               {notificationsOpen && (
                 <div className="dropdown-content">
                   <NavLink to="/notifications" className="dropdown-link">
@@ -94,42 +109,45 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <div className="profile-dropdown">
-              <FontAwesomeIcon
-                icon={faUser}
-                className="nav-link"
-                onClick={toggleDropdown}
-              />
+            <div
+              className="profile-dropdown"
+              onMouseEnter={toggleDropdown}
+              onMouseLeave={toggleDropdown}
+            >
+              <FontAwesomeIcon icon={faUser} className="nav-link" />
               {dropdownOpen && (
                 <div className="dropdown-content">
-                  {user.type === "employer" ? (
+                  {user.type === "jobseeker" ? (
                     <>
-                      <NavLink to="/employer/profile" className="dropdown-link">
-                        Edit Company Profile
-                      </NavLink>
                       <NavLink
-                        to="/employer/post-job"
+                        to="/jobseeker/dashboard"
                         className="dropdown-link"
                       >
-                        Post Jobs
+                        Jobseeker Dashboard
+                      </NavLink>
+                      <NavLink to="/settings" className="dropdown-link">
+                        Settings
                       </NavLink>
                     </>
                   ) : (
                     <>
                       <NavLink
-                        to="/jobseeker/profile"
+                        to="/employer/dashboard"
                         className="dropdown-link"
                       >
-                        Edit My Profile
+                        Employer Dashboard
                       </NavLink>
-                      <NavLink to="/jobseeker/jobs" className="dropdown-link">
-                        My Jobs
+                      <NavLink
+                        to="/employer/createjob"
+                        className="dropdown-link"
+                      >
+                        Create Jobs
+                      </NavLink>
+                      <NavLink to="/settings" className="dropdown-link">
+                        Settings
                       </NavLink>
                     </>
                   )}
-                  <NavLink to="/settings" className="dropdown-link">
-                    Settings
-                  </NavLink>
                   <button onClick={handleLogout} className="dropdown-link">
                     Logout
                   </button>
@@ -137,13 +155,14 @@ const Navbar = () => {
               )}
             </div>
           </>
-        ) : (
+        )}
+        {!user && (
           <>
             <NavLink
               to="/jobseeker/signin"
               className="nav-link jobseeker-signin"
             >
-              Job Seeker Sign In
+              Jobseeker Sign In
             </NavLink>
             <NavLink to="/employer/signin" className="nav-link employer-signin">
               Employer Sign In

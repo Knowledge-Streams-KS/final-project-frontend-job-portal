@@ -1,53 +1,65 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { fetchJobs } from "../axios/api";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Link, useLocation } from "react-router-dom";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
-    const getJobs = async () => {
+    const fetchJobs = async () => {
       try {
-        const data = await fetchJobs();
-        setJobs(data);
+        const queryParams = new URLSearchParams(location.search);
+        const search = queryParams.get("search") || "";
+        const response = await axios.get("http://localhost:3000/jobs", {
+          params: { search },
+        });
+        setJobs(response.data);
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        toast.error("Error fetching jobs");
+        console.error("Error fetching jobs:", error);
       }
     };
 
-    getJobs();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+    fetchJobs();
+  }, [location.search]);
 
   return (
-    <div>
-      <Navbar />
-      <div className="p-8">
-        <h1 className="mb-4 text-2xl">Latest Jobs</h1>
-        <div className="space-y-4">
-          {jobs.map((job) => (
-            <div key={job.id} className="rounded border p-4">
-              <h2 className="text-xl font-bold">{job.title}</h2>
-              <p>{job.description}</p>
-              <p>
-                <strong>Employer:</strong> {job.employerName}
+    <div className="p-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {jobs.length > 0 ? (
+          jobs.map((job) => (
+            <div
+              key={job.id}
+              className="rounded-lg border bg-white p-4 shadow-md"
+            >
+              <h3 className="text-xl font-bold">{job.title}</h3>
+              <p className="mt-2 text-gray-600">{job.description}</p>
+              <p className="mt-2 text-gray-600">
+                <span className="font-semibold">Location:</span> {job.location}
               </p>
-              <p>
-                <strong>Location:</strong> {job.location}
+              <p className="mt-2 text-gray-600">
+                <span className="font-semibold">Job Type:</span> {job.jobType}
               </p>
-              <p>
-                <strong>Posted on:</strong>{" "}
-                {new Date(job.postedDate).toLocaleDateString()}
+              <p className="mt-2 text-gray-600">
+                <span className="font-semibold">Salary Range:</span>{" "}
+                {job.salaryRange}
               </p>
+              <p className="mt-2 text-gray-600">
+                <span className="font-semibold">Category:</span> {job.category}
+              </p>
+              <Link
+                to={`/apply/${job.id}`}
+                className="mt-4 inline-block rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              >
+                Apply
+              </Link>
             </div>
-          ))}
-        </div>
+          ))
+        ) : (
+          <p>No jobs found</p>
+        )}
       </div>
     </div>
   );

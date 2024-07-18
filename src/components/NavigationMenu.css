@@ -1,9 +1,8 @@
-/* Existing styles */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff; /* Set the background color for the navigation menu */
+  background-color: #fff; /* White background */
   padding: 10px 20px;
 }
 
@@ -18,26 +17,31 @@
 }
 
 .logo {
-  width: 40px; /* Set the width of the logo */
-  height: 40px; /* Set the height of the logo */
-  margin-right: 10px; /* Add spacing between the logo and the text */
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333; /* Set the default color for the navigation links to a visible color */
+  color: #333;
   padding: 10px 20px;
   border-radius: 5px;
-  transition: background-color 0.3s; /* Add transition for hover effect */
+  transition: background-color 0.3s;
+  margin-left: 10px; /* Add space between nav links */
+}
+
+.nav-link:first-child {
+  margin-left: 0; /* Remove margin for the first nav link */
 }
 
 .nav-link:hover {
-  background-color: #e0e0e0; /* Set the background color on hover */
+  background-color: #e0e0e0;
 }
 
 .active-nav-link {
-  background-color: #f00; /* Set the distinct color for the active link */
-  font-weight: bold; /* Add emphasis to the active link */
+  background-color: #f00;
+  font-weight: bold;
 }
 
 /* New styles for dropdown */
@@ -45,6 +49,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  margin-left: 10px; /* Add space between dropdowns */
 }
 
 .dropdown-content {
@@ -75,14 +80,16 @@
 /* Styles for jobseeker and employer sign in */
 .jobseeker-signin {
   background-color: #ffa500; /* Orange background */
-  color: #fff; /* White text */
+  color: #fff;
   border-radius: 5px;
+  margin-left: 10px; /* Add space between sign in buttons */
 }
 
 .employer-signin {
   background-color: #008000; /* Green background */
-  color: #fff; /* White text */
+  color: #fff;
   border-radius: 5px;
+  margin-left: 10px; /* Add space between sign in buttons */
 }
 
 /* Responsive styles */
@@ -90,7 +97,7 @@
   display: none;
   font-size: 24px;
   cursor: pointer;
-  color: #333; /* Visible color for the hamburger menu */
+  color: #333;
 }
 
 @media (max-width: 768px) {
@@ -98,11 +105,11 @@
     display: none;
     flex-direction: column;
     width: 100%;
-    background-color: #fff; /* Ensure the background is visible on small screens */
+    background-color: #fff;
     position: absolute;
     top: 60px;
     left: 0;
-    z-index: 1; /* Ensure the dropdown is above other elements */
+    z-index: 1;
   }
 
   .right-nav.open {
@@ -113,6 +120,7 @@
     width: 100%;
     text-align: center;
     padding: 10px;
+    margin-left: 0; /* Remove margin for mobile view */
   }
 
   .hamburger-menu {

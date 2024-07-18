@@ -25,10 +25,14 @@ const AuthProvider = ({ children }) => {
           : "http://localhost:3000/auth/jobseeker/signin";
 
       const response = await axios.post(endpoint, values);
-      const userData = { ...response.data.user, type: userType };
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
-      return userData;
+      const { token, user: userData } = response.data;
+
+      // Store user data with type in state and localStorage
+      const userWithRole = { ...userData, type: userType };
+      setUser(userWithRole);
+      localStorage.setItem("user", JSON.stringify(userWithRole));
+
+      return userWithRole;
     } catch (error) {
       console.error("Login error:", error);
       throw error;

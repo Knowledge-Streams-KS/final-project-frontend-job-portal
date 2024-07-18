@@ -24,6 +24,7 @@ const EmployerSignIn = () => {
       await login(values, "employer");
       toast.success("Login successful. Redirecting to dashboard...", {
         onClose: () => navigate("/employer/dashboard"),
+        delay: 1000, // Set delay to 1 second
       });
     } catch (error) {
       toast.error("Login failed. Please check your credentials.");
